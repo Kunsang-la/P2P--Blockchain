@@ -1,0 +1,44 @@
+services:
+
+  node1:
+    build: .
+    container_name: node1
+    hostname: node1
+    environment:
+      NODE_NAME: node1
+      PORT: 3000
+      PEERS: http://node2:3000,http://node3:3000
+    ports:
+      - "3001:3000"
+    networks:
+      - blockchain-net
+
+  node2:
+    build: .
+    container_name: node2
+    hostname: node2
+    environment:
+      NODE_NAME: node2
+      PORT: 3000
+      PEERS: http://node1:3000,http://node3:3000
+    ports:
+      - "3002:3000"
+    networks:
+      - blockchain-net
+
+  node3:
+    build: .
+    container_name: node3
+    hostname: node3
+    environment:
+      NODE_NAME: node3
+      PORT: 3000
+      PEERS: http://node1:3000,http://node2:3000
+    ports:
+      - "3003:3000"
+    networks:
+      - blockchain-net
+
+networks:
+  blockchain-net:
+    driver: bridge
